@@ -7,9 +7,6 @@ class Calculator {
             memory: document.querySelector('.memory-indicator')
         };
 
-        // Mavzu almashtirgich
-        this.themeToggle = document.getElementById('theme-toggle');
-
         // Kalkulyator holatini saqlash uchun o'zgaruvchilar
         this.currentOperand = '0';
         this.previousOperand = '';
@@ -55,9 +52,6 @@ class Calculator {
         document.querySelector('.clear').addEventListener('click', () => this.clear());
         document.querySelector('.delete').addEventListener('click', () => this.delete());
         document.querySelector('.equals').addEventListener('click', () => this.calculate());
-
-        // Mavzu o'zgartirish
-        this.themeToggle.addEventListener('change', () => this.toggleTheme());
     }
 
     // Klaviatura bilan kiritishni qo'shish
@@ -95,39 +89,30 @@ class Calculator {
         });
     }
 
-    // Raqam qo'shish
+    // Qolgan metodlar o'zgarishsiz qoladi...
+
     appendNumber(number) {
-        // Nuqta tekshirish
         if (number === '.' && this.currentOperand.includes('.')) return;
-        
-        // Maksimal uzunlikni tekshirish
         if (this.currentOperand.length >= 12) return;
-        
-        // 0 ni almashtirish yoki qo'shish
         if (this.currentOperand === '0' && number !== '.') {
             this.currentOperand = number;
         } else {
             this.currentOperand += number;
         }
-        
         this.updateDisplay();
     }
 
-    // Operatorni tanlash
     chooseOperation(operation) {
         if (this.currentOperand === '') return;
-        
         if (this.previousOperand !== '') {
             this.calculate();
         }
-        
         this.operation = operation;
         this.previousOperand = this.currentOperand;
         this.currentOperand = '';
         this.updateDisplay();
     }
 
-    // Maxsus operatsiyalarni bajarish
     handleAdvancedOperation(operation) {
         const number = parseFloat(this.currentOperand);
         let result;
@@ -157,7 +142,6 @@ class Calculator {
         this.updateDisplay();
     }
 
-    // Hisoblash
     calculate() {
         let computation;
         const prev = parseFloat(this.previousOperand);
@@ -195,7 +179,6 @@ class Calculator {
         this.updateDisplay();
     }
 
-    // Xotira funksiyalari
     memoryClear() {
         this.memoryValue = 0;
         this.hasMemory = false;
@@ -221,7 +204,6 @@ class Calculator {
         this.updateMemoryDisplay();
     }
 
-    // Tozalash va o'chirish
     clear() {
         this.currentOperand = '0';
         this.previousOperand = '';
@@ -242,7 +224,6 @@ class Calculator {
         this.updateDisplay();
     }
 
-    // Xatolik ko'rsatish
     showError() {
         this.currentOperand = 'Xato';
         this.previousOperand = '';
@@ -250,10 +231,8 @@ class Calculator {
         this.updateDisplay();
     }
 
-    // Sonni formatlash
     formatNumber(number) {
         if (isNaN(number)) return 'Xato';
-        
         let stringNumber = number.toString();
         if (stringNumber.length > 12) {
             if (number > 999999999999) {
@@ -264,7 +243,6 @@ class Calculator {
         return stringNumber;
     }
 
-    // Displeyni yangilash
     updateDisplay() {
         this.display.current.textContent = this.currentOperand;
         if (this.operation != null) {
@@ -274,14 +252,8 @@ class Calculator {
         }
     }
 
-    // Xotira indikatorini yangilash
     updateMemoryDisplay() {
         this.display.memory.textContent = this.hasMemory ? 'M' : '';
-    }
-
-    // Mavzuni o'zgartirish
-    toggleTheme() {
-        document.body.classList.toggle('light-theme');
     }
 }
 
